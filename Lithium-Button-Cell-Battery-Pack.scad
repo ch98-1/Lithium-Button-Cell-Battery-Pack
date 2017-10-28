@@ -1,5 +1,5 @@
 //Copyright (c) 2017 Corwin Hansen
-//makes a button cell battery box. CR-2016 default
+//makes a button cell battery box. CR-2016 default. can be used for other battery by changing the setting.
 
 what_to_make=0; //set to 0 for making body, set to 1 for making cap
 
@@ -15,7 +15,7 @@ thumbturn_height=5;//height of thumbturn
 thumbturn_knurl=16;//number of knurl on thumbturn divided by 4
 
 wall_width=2;//width of wall
-spring_contact_length=5;//length of positive and negative contacts added
+spring_contact_length=5;//length of positive and negative contacts added. set to 0 or negative for applying pressure with screw
 contact_wire_diameter=1.5;//diameter of the contact wire
 
 screw_turn=0.5;//number of turns in screw per unit
