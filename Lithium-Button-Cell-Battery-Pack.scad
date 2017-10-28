@@ -1,5 +1,5 @@
 //Copyright (c) 2017 Corwin Hansen
-//makes a button cell battery box. CR-2016 default. can be used for other battery by changing the setting.
+//makes a button cell battery box. CR-2016 with pla 3d printing by default. can be used for other battery by changing the setting.
 
 what_to_make=0; //set to 0 for making body, set to 1 for making cap
 
@@ -21,9 +21,9 @@ contact_wire_diameter=1.5;//diameter of the contact wire
 screw_turn=0.5;//number of turns in screw per unit
 screw_torarence=0.2;//torarence of screw
 
-shrinkage=0.05;//shrinkage during manifacturing
+shrinkage=0.02;//shrinkage during manifacturing
 
-$fn=100;//smoothness
+$fn=50;//smoothness
 
 
 
