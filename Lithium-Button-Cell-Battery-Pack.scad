@@ -19,7 +19,7 @@ spring_contact_length=5;//length of positive and negative contacts added. set to
 contact_wire_diameter=3;//diameter of the contact wire
 
 screw_turn=0.5;//number of turns in screw per unit
-screw_tolerance=0.4;//tolerance of screw
+screw_tolerance=0.25;//tolerance of screw
 
 shrinkage=0.02;//shrinkage during manifacturing
 
@@ -76,7 +76,7 @@ scale(scale){//scale the object
                 cylinder(h=bottom_endcap_height*2, d=contact_wire_diameter);//make cylinder for wire
             }
             
-            translate([0, 0, theight-screw_height]){//move threadded rod to correct position
+            translate([0, 0, theight-screw_height-thumbturn_height/4]){//move threadded rod to correct position
                 thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din, dout=(dout+din)/2);//make threadded rod
             }
         }
@@ -93,7 +93,7 @@ scale(scale){//scale the object
                 }
                 
                 translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
-                    thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_tolerance, dout=(dout+din)/2-screw_tolerance);//make threadded rod
+                    thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_tolerance*2, dout=(dout+din)/2-screw_tolerance*2);//make threadded rod
                 }
                 
             }
