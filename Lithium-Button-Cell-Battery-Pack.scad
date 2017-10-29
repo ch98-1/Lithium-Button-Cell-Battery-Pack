@@ -16,7 +16,7 @@ thumbturn_knurl=16;//number of knurl on thumbturn divided by 4
 
 wall_width=2;//width of wall
 spring_contact_length=5;//length of positive and negative contacts added. set to 0 or negative for applying pressure with screw
-contact_wire_diameter=1.5;//diameter of the contact wire
+contact_wire_diameter=3;//diameter of the contact wire
 
 screw_turn=0.5;//number of turns in screw per unit
 screw_torarence=0.2;//torarence of screw
