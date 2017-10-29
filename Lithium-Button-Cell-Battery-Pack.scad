@@ -77,7 +77,7 @@ scale(scale){//scale the object
             }
             
             translate([0, 0, theight-screw_height]){//move threadded rod to correct position
-                thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din+screw_tolerance/2, dout=(dout+din)/2+screw_tolerance/2);//make threadded rod
+                thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din, dout=(dout+din)/2);//make threadded rod
             }
         }
         
@@ -93,7 +93,7 @@ scale(scale){//scale the object
                 }
                 
                 translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
-                    thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_tolerance/2, dout=(dout+din)/2-screw_tolerance/2);//make threadded rod
+                    thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_tolerance, dout=(dout+din)/2-screw_tolerance);//make threadded rod
                 }
                 
             }
