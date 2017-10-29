@@ -8,7 +8,7 @@ height=1.6;//button cell height in
 number=33;//number of button cell
 diameter=20;//diameter of button cell in 
 
-width_torarence=0.5;//torarence of width from battery to wall
+width_tolerance=0.5;//tolerance of width from battery to wall
 bottom_endcap_height=3;//height of bottom endcap 
 screw_height=5;//height of screw
 thumbturn_height=5;//height of thumbturn
@@ -19,7 +19,7 @@ spring_contact_length=5;//length of positive and negative contacts added. set to
 contact_wire_diameter=3;//diameter of the contact wire
 
 screw_turn=0.5;//number of turns in screw per unit
-screw_torarence=0.2;//torarence of screw
+screw_tolerance=0.35;//tolerance of screw
 
 shrinkage=0.02;//shrinkage during manifacturing
 
@@ -30,8 +30,8 @@ $fn=50;//smoothness
 
 //calculations
 scale=1/(1-shrinkage);//output scale of the object. Calculated based on shrinkage.
-dout=diameter+width_torarence*2+wall_width*2;//calculate the outer diameter
-din=diameter+width_torarence*2;//calculate the inner diameter
+dout=diameter+width_tolerance*2+wall_width*2;//calculate the outer diameter
+din=diameter+width_tolerance*2;//calculate the inner diameter
 theight=height*number+bottom_endcap_height+screw_height+spring_contact_length;//calculate total height of the body
 
 
@@ -77,7 +77,7 @@ scale(scale){//scale the object
             }
             
             translate([0, 0, theight-screw_height]){//move threadded rod to correct position
-                thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din+screw_torarence/2, dout=(dout+din)/2+screw_torarence/2);//make threadded rod
+                thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din+screw_tolerance/2, dout=(dout+din)/2+screw_tolerance/2);//make threadded rod
             }
         }
         
@@ -93,7 +93,7 @@ scale(scale){//scale the object
                 }
                 
                 translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
-                    thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_torarence/2, dout=(dout+din)/2-screw_torarence/2);//make threadded rod
+                    thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_tolerance/2, dout=(dout+din)/2-screw_tolerance/2);//make threadded rod
                 }
                 
             }
