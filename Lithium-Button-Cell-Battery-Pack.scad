@@ -19,7 +19,7 @@ spring_contact_length=5;//length of positive and negative contacts added. set to
 contact_wire_diameter=3;//diameter of the contact wire
 
 screw_turn=0.5;//number of turns in screw per unit
-screw_tolerance=0.35;//tolerance of screw
+screw_tolerance=0.4;//tolerance of screw
 
 shrinkage=0.02;//shrinkage during manifacturing
 
