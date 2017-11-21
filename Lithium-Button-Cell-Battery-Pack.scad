@@ -4,9 +4,9 @@
 what_to_make=0; //set to 0 for making body, set to 1 for making cap
 
 //variables
-height=1.6;//button cell height in 
+height=1.6;//button cell height 
 number=33;//number of button cell
-diameter=20;//diameter of button cell in 
+diameter=20;//diameter of button cell 
 
 width_tolerance=0.5;//tolerance of width from battery to wall
 bottom_endcap_height=3;//height of bottom endcap 
