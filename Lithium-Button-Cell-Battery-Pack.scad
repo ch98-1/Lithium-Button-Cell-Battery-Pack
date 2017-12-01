@@ -1,12 +1,11 @@
 //Copyright (c) 2017 Corwin Hansen
 //makes a button cell battery box. CR-2016 with pla 3d printing by default. can be used for other battery by changing the setting.
 
-what_to_make=0; //set to 0 for making body, set to 1 for making cap
-
 //variables
 height=1.6;//button cell height 
-number=33;//number of button cell
 diameter=20;//diameter of button cell 
+number=50;//number of button cell per stack
+stack=2;//number of stack connected together
 
 width_tolerance=0.5;//tolerance of width from battery to wall
 bottom_endcap_height=3;//height of bottom endcap 
@@ -26,13 +25,6 @@ shrinkage=0.02;//shrinkage during manifacturing
 $fn=50;//smoothness
 
 
-
-
-//calculations
-scale=1/(1-shrinkage);//output scale of the object. Calculated based on shrinkage.
-dout=diameter+width_tolerance*2+wall_width*2;//calculate the outer diameter
-din=diameter+width_tolerance*2;//calculate the inner diameter
-theight=height*number+bottom_endcap_height+screw_height+spring_contact_length;//calculate total height of the body
 
 
 //module to make a knurl centerd at origin. makes a knurled cilynder with diameter of diameter on edges, height of height, and number*4 bumps
@@ -57,51 +49,85 @@ module thread(height, turn, din, dout){
     }
 }
 
-//start making the actual thing
-scale(scale){//scale the object
-    //where everything is made
+
     
-    
-    if(what_to_make==0){//if choosen to make the body
+//module for making the body. Takes in variables and makes the correct object
+module body (height, number, diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, wall_width, spring_contact_length, contact_wire_diameter , screw_turn, screw_tolerance){
+    //calculations
+    dout=diameter+width_tolerance*2+wall_width*2;//calculate the outer diameter
+    din=diameter+width_tolerance*2;//calculate the inner diameter
+    theight=height*number+bottom_endcap_height+screw_height+spring_contact_length;//calculate total height of the body
+    difference(){//subtract inner cylinder, wire hole, and screw from outer cylinder
         
-        difference(){//subtract inner cylinder, wire hole, and screw from outer cylinder
-            
-            cylinder(h=theight, d=dout);//make outer cylinder
-            
-            translate([0, 0, bottom_endcap_height]){//move inner cylinder up to accomodate for bottom
-                cylinder(h=theight, d=din);//make inner cylinder
-            }
-            
-            translate([0, 0, -bottom_endcap_height/2]){//move wire cylinder so boolean happens correctly
-                cylinder(h=bottom_endcap_height*2, d=contact_wire_diameter);//make cylinder for wire
-            }
-            
-            translate([0, 0, theight-screw_height-thumbturn_height/4]){//move threadded rod to correct position
-                thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din, dout=(dout+din)/2);//make threadded rod
-            }
+        cylinder(h=theight, d=dout);//make outer cylinder
+        
+        translate([0, 0, bottom_endcap_height]){//move inner cylinder up to accomodate for bottom
+            cylinder(h=theight, d=din);//make inner cylinder
         }
         
-    }
-    
-    
-    else if(what_to_make==1){//if choosen to make the cap
-        difference(){//subtract wire hole from cap
-            union(){//add knurl and screw to make screw
-                
-                translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
-                    knurl(diameter=dout, height=thumbturn_height, number=thumbturn_knurl);//make knurl for cap    
-                }
-                
-                translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
-                    thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_tolerance*2, dout=(dout+din)/2-screw_tolerance*2);//make threadded rod
-                }
-                
-            }
-            
-            translate([0, 0, -(thumbturn_height+screw_height)/2]){//move wire cylinder so boolean happens correctly
-                cylinder(h=(thumbturn_height+screw_height)*2, d=contact_wire_diameter);//make cylinder for wire
-            }
-            
+        translate([0, 0, -bottom_endcap_height/2]){//move wire cylinder so boolean happens correctly
+            cylinder(h=bottom_endcap_height*2, d=contact_wire_diameter);//make cylinder for wire
+        }
+        
+        translate([0, 0, theight-screw_height-thumbturn_height/4]){//move threadded rod to correct position
+            thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din, dout=(dout+din)/2);//make threadded rod
         }
     }
 }
+
+
+
+//module for making the cap. variables same as defined on top
+module cap (diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, contact_wire_diameter, screw_turn, screw_tolerance){
+    //calculations
+    dout=diameter+width_tolerance*2+wall_width*2;//calculate the outer diameter
+    din=diameter+width_tolerance*2;//calculate the inner diameter
+        
+    difference(){//subtract wire hole from cap
+        union(){//add knurl and screw to make screw
+            
+            translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
+                knurl(diameter=dout, height=thumbturn_height, number=thumbturn_knurl);//make knurl for cap    
+            }
+            
+            translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
+                thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_tolerance*2, dout=(dout+din)/2-screw_tolerance*2);//make threadded rod
+            }
+            
+        }
+        
+        translate([0, 0, -(thumbturn_height+screw_height)/2]){//move wire cylinder so boolean happens correctly
+            cylinder(h=(thumbturn_height+screw_height)*2, d=contact_wire_diameter);//make cylinder for wire
+        }    
+    }
+}
+
+
+
+//module for making the body and cap that is specified. variables are the same as defined on the top.
+module batterypack (height, number, diameter, stack, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, wall_width, spring_contact_length, contact_wire_diameter , screw_turn, screw_tolerance, shrinkage){
+    scale=1/(1-shrinkage);//output scale of the object. Calculated based on shrinkage.
+    //calculations
+    dout=diameter+width_tolerance*2+wall_width*2;//calculate the outer diameter
+    din=diameter+width_tolerance*2;//calculate the inner diameter
+    
+    scale(scale){//scale the object
+        
+        for(n=[1:stack]){//arrange caps
+            translate([0, (n-1)*(dout+wall_width), 0]) {
+                cap(diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, contact_wire_diameter, screw_turn, screw_tolerance);//make cap
+            }
+        }
+        for(n=[1:stack]){//arrange bodies
+            translate([dout+wall_width, (n-1)*((dout+din+wall_width)/2), 0]) {
+                body(height, number, diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, wall_width, spring_contact_length, contact_wire_diameter , screw_turn, screw_tolerance);//make body
+            }
+        }
+    }
+}
+
+
+
+
+//make the actual thing
+batterypack(height, number, diameter, stack, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, wall_width, spring_contact_length, contact_wire_diameter , screw_turn, screw_tolerance, shrinkage);
