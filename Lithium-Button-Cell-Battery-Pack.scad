@@ -92,7 +92,7 @@ module cap (diameter, width_tolerance, bottom_endcap_height, screw_height, thumb
             }
             
             translate([0, 0, thumbturn_height]){//move threadded rod to correct position
-                thread(height=screw_height, turn=screw_turn, din=din-screw_tolerance*2, dout=(dout+din)/2-screw_tolerance*2);//make threadded rod
+                thread(height=screw_height+thumbturn_height/126, turn=screw_turn, din=din-screw_tolerance*2, dout=(dout+din)/2-screw_tolerance*2);//make threadded rod
             }
             
         }
