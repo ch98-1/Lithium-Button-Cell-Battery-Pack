@@ -78,7 +78,8 @@ module body (height, number, diameter, width_tolerance, bottom_endcap_height, sc
 
 
 //module for making the cap. variables same as defined on top
-module cap (diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, contact_wire_diameter, screw_turn, screw_tolerance){
+//size is the knurl diameter
+module cap (diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, wall_width,contact_wire_diameter, screw_turn, screw_tolerance, size){
     //calculations
     dout=diameter+width_tolerance*2+wall_width*2;//calculate the outer diameter
     din=diameter+width_tolerance*2;//calculate the inner diameter
@@ -87,11 +88,11 @@ module cap (diameter, width_tolerance, bottom_endcap_height, screw_height, thumb
         union(){//add knurl and screw to make screw
             
             translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
-                knurl(diameter=dout, height=thumbturn_height, number=thumbturn_knurl);//make knurl for cap    
+                knurl(diameter=size, height=thumbturn_height, number=thumbturn_knurl);//make knurl for cap    
             }
             
-            translate([0, 0, thumbturn_height/2]){//move threadded rod to correct position
-                thread(height=screw_height+thumbturn_height/2, turn=screw_turn, din=din-screw_tolerance*2, dout=(dout+din)/2-screw_tolerance*2);//make threadded rod
+            translate([0, 0, thumbturn_height]){//move threadded rod to correct position
+                thread(height=screw_height, turn=screw_turn, din=din-screw_tolerance*2, dout=(dout+din)/2-screw_tolerance*2);//make threadded rod
             }
             
         }
@@ -115,7 +116,12 @@ module batterypack (height, number, diameter, stack, width_tolerance, bottom_end
         
         for(n=[1:stack]){//arrange caps
             translate([0, (n-1)*(dout+wall_width), 0]) {
-                cap(diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, contact_wire_diameter, screw_turn, screw_tolerance);//make cap
+                if(stack == 1){
+                    cap(diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, wall_width,contact_wire_diameter, screw_turn, screw_tolerance, size = dout);//make bigger cap if possible
+                }
+                else{
+                     cap(diameter, width_tolerance, bottom_endcap_height, screw_height, thumbturn_height, thumbturn_knurl, wall_width,contact_wire_diameter, screw_turn, screw_tolerance, size = (dout+din)/2);//make smaller cap
+                }
             }
         }
         for(n=[1:stack]){//arrange bodies
